@@ -16,18 +16,22 @@ import Drawer from './navigation/Drawer';
 
 import {Provider} from 'react-redux'
 import configureStore from './configureStore'
+import {applyMiddleware, createStore } from 'redux';
+import mainReducer from './redux/reducers/mainReducer';
+import thunk from 'redux-thunk';
 
-// const store = configureStore()
+
+const store = createStore(mainReducer, applyMiddleware(thunk))
 
 const App = ()=>{
   return (    
-    // <Provider>
+    <Provider store={store}>
       <NavigationContainer>
         <StatusBar style={styles.statusBar}></StatusBar>
         {/* <Stack/> */}
         <Drawer/>
       </NavigationContainer>
-    // {/* </Provider> */}
+    </Provider>
   )
 }
 

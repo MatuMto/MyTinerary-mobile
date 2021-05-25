@@ -1,38 +1,41 @@
 import React, { useEffect } from 'react'
 import {Text, View, StyleSheet, StatusBar, Image, ScrollView, ImageBackground, Button, TouchableHighlight, TouchableWithoutFeedback} from 'react-native'
 import axios from 'axios'
-
-// import { Icon, InlineIcon } from '@iconify/react';
-import bxMenu from '@iconify-icons/bx/bx-menu';
-
-// import { Icon } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
-// const myIcon = <Icon name="rocket" size={30} color="#900" />;
+// import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+import {
+  useFonts,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
+
 
 const header = (props)=>{
+
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+  });
+
+  // if (!fontsLoaded) {
+  //   return <AppLoading />;
+  // }
+
+  if(!fontsLoaded){
+    return null
+  }else {
   return (
     <>
         <View style={ props.properties.screen === 'home' ? styles.homeHeader : styles.citiesHeader } >
             <View>
-                {/* <Button title="menu" onPress={()=>props.properties.fatherProps.navigation.openDrawer()} /> */}
-                {/* <Text>options</Text> */}
-                {/* <Icon icon={bxMenu} /> */}
-                {/* <Icon
-                  raised
-                  name='heartbeat'
-                  type='font-awesome'
-                  color='#f50'
-                  onPress={() => console.log('hello')} 
-                /> */}
                 <Text onPress={()=>props.properties.fatherProps.navigation.openDrawer()}>
-
-                <Icon name="bars" style={styles.menuIcon} />
-              </Text>
+                  <Icon name="bars" style={styles.menuIcon} />
+                </Text>
             </View>
 
             <View style={styles.logoContainer}>
                 <Image style={styles.logoImg} source={require('../assets/logo-finish.png')} />
+                
                 <Text style={styles.titulo}>MyTinerary</Text>
+                
             </View>
             
             <TouchableWithoutFeedback 
@@ -44,7 +47,7 @@ const header = (props)=>{
         </View>
           
     </>
-  )
+  )}
 }
 
 const styles = StyleSheet.create({
@@ -76,7 +79,8 @@ const styles = StyleSheet.create({
   titulo: {
     color: 'black',
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 20,
+    fontFamily: 'Inter_900Black'
   },
   userUnlogedContainer: {
     // backgroundColor: 'red',

@@ -15,8 +15,10 @@ const cities = (props)=>{
 
     useEffect(()=>{
         const fetchear = async()=> {
-            const respuesta = await axios.get('https://mytinerarylorenzo.herokuapp.com/api/cities')
-            setAllCities(respuesta.data.respuesta)
+            await props.uploadCities()
+            // const respuesta = await axios.get('https://mytinerarylorenzo.herokuapp.com/api/cities')
+            
+            // setAllCities(respuesta.data.respuesta)
         }
         fetchear()  
     }, [])
@@ -35,25 +37,24 @@ const cities = (props)=>{
 
                 <View style={styles.filterSectionContainer} >
                     <Text style={styles.callToAction} >Find your dreams city!</Text>
-                    <TextInput placeholder="Search by Name" onChangeText={(e)=>setFilterValue(e)} style={styles.filterInput} />
+                    <TextInput placeholder="Search by Name"
+                     onChangeText={(e) => props.citiesFilter(e)}  style={styles.filterInput} />
                 </View>
 
-                <View>
-                    {allCities.map(city => { 
+                    {props.citiesFiltered.length > 0 &&
+                    props.citiesFiltered.map(city => { 
                         return(
                             <View key={city._id} style={styles.cityContainer} >
                                 <TouchableHighlight 
                                     style={styles.touchableHighlight}
-                                    onPress={()=>props.navigation.navigate('itineraries',{nombre: city.cityName})}
-                                    >
-                                    {/* <View style={styles.imageSpace}></View> */}
+                                    onPress={()=>props.navigation.navigate('itineraries',{id: city._id})}
+                                >
                                     <Image source={{uri: city.img }} style={styles.cityImg} />
                                 </TouchableHighlight>
-                                <Text style={styles.cityName} >{city.cityName}</Text>
+                                <Text style={styles.cityName}>{city.cityName} - {city.country}</Text>
                             </View>
                         ) 
                     })}
-                </View>
             
             </ScrollView>
         </>
@@ -90,35 +91,50 @@ const styles = StyleSheet.create({
         // backgroundColor: 'green'
     },
     cityContainer: {
-        // backgroundColor: 'green',
-        width: '90%',
+        backgroundColor: 'rgb(212, 212, 212);',
+        width: '75%',
         marginLeft: 'auto',
         marginRight: 'auto',
         marginBottom: 20,
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 9,
+        },
+        shadowOpacity: 0.50,
+        shadowRadius: 12.35,
+        elevation: 19,
     }, 
     touchableHighlight: {
-        width: '80%',
-        alignItems: 'center',
-        borderRadius: 5
-    },
-    imageSpace: {
         width: '100%',
-        // width: 250,
-        height: 200,
-        backgroundColor: 'red',
-        borderRadius: 5
+        alignItems: 'center',
+        borderRadius: 5,
     },
     cityImg: {
         width: '100%',
         height: 200,
-        borderRadius: 5
-
+        // borderRadius: 25
+        borderTopLeftRadius: 6,
+        borderTopRightRadius: 6,
     }, 
     cityName: {
-        fontSize: 20
+        fontSize: 20,
+        marginVertical: 4
     }
 })
 
+const mapStateToProps = (state)=>{
+    return {
+        citiesList: state.cities.allCities,
+        citiesFiltered: state.cities.citiesFilter
+    }
+}
 
-export default cities
+const mapDispatchToProps = {
+    uploadCities: citiesActions.uploadCities,
+    citiesFilter: citiesActions.citiesFilter
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(cities)

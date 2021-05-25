@@ -5,6 +5,7 @@ import Cities from '../screens/Cities'
 import Itineraries from '../screens/Itineraries'
 import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
+import Activities from '../screens/Activities'
 
 const stack = createStackNavigator()
 
@@ -21,6 +22,7 @@ export const CitiesStack = ()=>{
         <stack.Navigator>
             <stack.Screen name="cities" component={Cities} options={{headerShown: false}} />
             <stack.Screen name="itineraries" component={Itineraries}  />
+            <stack.Screen name="activities" component={Activities} />
         </stack.Navigator>
     )
 }

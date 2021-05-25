@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import citiesReducer from "./citiesReducer";
-import itinerariesReducer from "./itineraryReducer";
-import authReducer from "./authReducer"
+import itinerariesReducer from "./itinerariesReducer";
+import authReducer from "./authReducers"
 
 const mainReducer = combineReducers({
    cities: citiesReducer,
