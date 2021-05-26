@@ -7,6 +7,11 @@ import activitiesActions from '../redux/actions/activitiesActions'
 import itinerariesActions from '../redux/actions/itinerariesActions'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native'
+import {AppLoading} from 'expo'
+import { useFonts, Montserrat_400Regular} from '@expo-google-fonts/montserrat'
+import { Questrial_400Regular} from '@expo-google-fonts/questrial'
+import { Spartan_500Medium} from '@expo-google-fonts/spartan'
+import { Jost_400Regular, Jost_500Medium} from '@expo-google-fonts/jost'
 
 
 const Activities = (props)=> {
@@ -26,6 +31,19 @@ const Activities = (props)=> {
         }
         fetch(props.route.params.itinerary._id)
     },[])
+
+
+        let [fontsLoaded, error] = useFonts({
+            Montserrat_400Regular,
+            Questrial_400Regular,
+            Spartan_500Medium,
+            Jost_400Regular,
+            Jost_500Medium
+        })
+
+    // if(!fontsLoaded){
+    //     return <AppLoading/>
+    // }
 
     console.log(commentContent)
     // console.log(itinerarySelected)
@@ -92,10 +110,6 @@ const Activities = (props)=> {
 
                 <Text style={styles.lasOnesText} >Last Ones</Text>
                 <View style={styles.commentsContainer} >
-                    <View style={styles.commentContainer}>
-                        <Text style={styles.commentAuthor} >Mateo Lorenzo</Text>
-                        <Text style={styles.commentContent} >Desde que vi el Aston Martin me enamoré de su auto llamado dbs porque está tremendo y algun dia me lo voy a llevar en un yate a dar vueltas por europaa!</Text>
-                    </View>
                     {itineraryComments.map((comment, index) => {
                         return(
                             <View key={index} style={styles.commentContainer}>
@@ -127,7 +141,11 @@ const styles = StyleSheet.create({
     },
     activityTitle: {
         fontSize: 20,
-        marginLeft: '2%'
+        marginLeft: '2%',
+        // fontFamily: "Spartan_500Medium",
+        // fontFamily: "Montserrat_400Regular",
+        fontFamily: "Jost_400Regular"
+
     },
     activityImage: {
         width: '98%',
@@ -137,8 +155,10 @@ const styles = StyleSheet.create({
     },
     activityDescription: {
         marginTop: 5,
-        fontSize: 18,
+        fontSize: 22,
         marginHorizontal: 10,
+        // fontFamily: "Montserrat_400Regular",
+        fontFamily: "Questrial_400Regular",
     },
     authorPresentation: {
         // backgroundColor: 'green',
@@ -157,7 +177,10 @@ const styles = StyleSheet.create({
         width: '50%',
         marginLeft: '5%',
         // justifyContent: 'center'
-    },    presentationText1: {
+        fontFamily: "Questrial_400Regular",
+
+    },   
+        presentationText1: {
         fontSize: 18,
         marginBottom: 2
         // fontWeight: 'bold'
