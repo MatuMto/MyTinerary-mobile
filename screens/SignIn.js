@@ -1,38 +1,65 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {ScrollView, StyleSheet, Text, View, TextInput, TouchableHighlight} from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '../components/Header'
+import RNPickerSelect from 'react-native-picker-select';
+import { connect } from 'react-redux';
+import authActions from '../redux/actions/authActions'
+
 
 const SignIn = (props)=>{
 
-    const [userInfo, setUserInfo] = useState({nombre: '', })
+    const [userInfo, setUserInfo] = useState({name: '', lastName: '', mail: '', password: '', 
+    image: '', country: '' })
+    const [userIsLogged, setuserIsLogged] = useState(false) 
+
+    useEffect(()=>{
+        const userIsLogged_ = async()=>{
+            await AsyncStorage.getItem('userLogged') && console.log('hay un usuario logeado')
+            const usuarioLogeado = await AsyncStorage.getItem('userLogged')
+            console.log(usuarioLogeado)
+        }
+        userIsLogged_()
+    },[])
 
     const readInput = (inputValue, field)=>{
         setUserInfo({
             ...userInfo,
             [field]: inputValue
         })
-        console.log(userInfo)
+        // console.log(userInfo)
     }
+
+    const sendInfo = async(info)=> {
+        // console.log(userInfo)
+        const response = await props.logUser(info)
+        if(response){
+            props.navigation.navigate('Home')
+        }
+        console.log(response.success)
+    }
+    console.log(props)
+    console.log('me renderice')
 
     return (
         <ScrollView style={styles.container}>
-          <Header properties={{screen: 'home', fatherProps: props}} />
+          <Header properties={{screen: 'Home', fatherProps: props}} />
             <View style={styles.titleContainer}>
                 <Text style={styles.title} >Sign In!</Text>
             </View>
             <View style={styles.inputContainer}>
-                <TextInput 
+                {/* <TextInput 
                     placeholder="Name"
                     placeholderTextColor={'black'}    
                     style={styles.textInput}
                     onChangeText={(e)=>readInput(e,'name')}
-                />
-                <TextInput
+                /> */}
+                {/* <TextInput
                     placeholder="Last Name" 
                     placeholderTextColor={'black'}  
                     style={styles.textInput}
                     onChangeText={(e)=>readInput(e,'lastName')}
-                />
+                /> */}
                 <TextInput
                     placeholder="Mail" 
                     placeholderTextColor={'black'} 
@@ -43,22 +70,48 @@ const SignIn = (props)=>{
                     placeholder="Password" 
                     placeholderTextColor={'black'} 
                     style={styles.textInput}
+                    secureTextEntry={true}
                     onChangeText={(e)=>readInput(e,'password')}
                 />
-                <TextInput
+                {/* <TextInput
                     placeholder="Image" 
                     placeholderTextColor={'black'} 
                     style={styles.textInput}
                     onChangeText={(e)=>readInput(e,'image')}
-                />
-                <TextInput
+                /> */}
+                {/* <TextInput
                     placeholder="Country" 
                     placeholderTextColor={'black'} 
                     style={styles.textInput} 
                     onChangeText={(e)=>readInput(e,'country')}
-                />
+                /> */}
+                {/* <View style={styles.selectContainer}>
+                    <RNPickerSelect
+                        onValueChange={(value) => readInput(value, 'country')}
+                        useNativeAndroidPickerStyle={false}
+                        // style={customPickerStyles.inputAndroid}
+                        style={
+                            Platform.OS === 'ios'
+                              ? customPickerStyles.inputIOS
+                              : customPickerStyles.inputAndroid
+                          }
+                        placeholder={{ label: "Country", value: null }}
+                        items={[
+                            { label: 'Argentina', value: 'Argentina' },
+                            { label: 'New Zealand', value: 'New Zealand' },
+                            { label: 'Korea', value: 'Korea' },
+                            { label: 'Brazil', value: 'Brazil' },
+                            { label: 'Indonesia', value: 'Indonesia' },
+                            { label: 'United States', value: 'United States' },
+                            { label: 'Switzerland', value: 'Switzerland' },
+                            { label: 'Sweden', value: 'Sweden' },
+                            { label: 'Finland', value: 'Finland' },
+                        ]}
+                    />
+                </View> */}
 
-                <TouchableHighlight underlayColor="#DDDDDD" onPress={()=>console.log('hola')} style={styles.signInButtonContainer}>
+
+                <TouchableHighlight underlayColor="#DDDDDD" onPress={()=>sendInfo(userInfo)} style={styles.signInButtonContainer}>
                     <Text style={styles.signInButton}>Sign In</Text>
                 </TouchableHighlight>
             
@@ -96,6 +149,23 @@ const styles = StyleSheet.create({
         // textAlign: 'center',
         borderRadius: 4
     },
+    selectContainer: {
+        backgroundColor: 'rgb(235,235,235)',
+        // height: 100,
+        width: '60%',
+        color: 'black',
+        marginBottom: 25,
+        borderWidth: 1,
+        borderColor: "black",
+        // paddingTop: 10,
+        // paddingBottom: 10,
+        paddingLeft: 15,
+        borderRadius: 4
+
+    },
+    countrySelect: {
+        color: 'black'
+    },
     signInButtonContainer: {
         // backgroundColor: 'green',
         // alignItems: 'center',
@@ -115,5 +185,14 @@ const styles = StyleSheet.create({
 
 })
 
+  const mapStateToProps = (state)=> {
+        return{
+            userLogged: state.auth.userLogged
+        }   
+  }
 
-export default SignIn
+  const mapDispatchToProps = {
+    logUser: authActions.logUser
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

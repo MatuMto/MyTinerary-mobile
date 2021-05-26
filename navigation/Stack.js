@@ -12,7 +12,7 @@ const stack = createStackNavigator()
 export const HomeStack = ()=>{
     return(
         <stack.Navigator>
-            <stack.Screen name="home" component={Home} options={{headerShown: false}} />
+            <stack.Screen name="Home" component={Home} options={{headerShown: false}} />
         </stack.Navigator>
     )
 }
@@ -20,9 +20,9 @@ export const HomeStack = ()=>{
 export const CitiesStack = ()=>{
     return(
         <stack.Navigator>
-            <stack.Screen name="cities" component={Cities} options={{headerShown: false}} />
-            <stack.Screen name="itineraries" component={Itineraries}  />
-            <stack.Screen name="activities" component={Activities} />
+            <stack.Screen name="Cities" component={Cities} options={{headerShown: false}} />
+            <stack.Screen name="Itineraries" component={Itineraries}  />
+            <stack.Screen name="Activities" component={Activities} />
         </stack.Navigator>
     )
 }
@@ -30,7 +30,7 @@ export const CitiesStack = ()=>{
 export const SignInStack = ()=>{
     return(
         <stack.Navigator>
-            <stack.Screen name="signIn" component={SignIn} />
+            <stack.Screen name="Sign In" component={SignIn} />
         </stack.Navigator>
     )
 }
@@ -38,10 +38,11 @@ export const SignInStack = ()=>{
 export const SignUpStack = ()=>{
     return( 
         <stack.Navigator>
-            <stack.Screen name="signUp" component={SignUp} />
+            <stack.Screen name="Sign Up" component={SignUp} />
         </stack.Navigator>
     )
 }
+
 
 // const Stack = ()=>{
 //     return (

@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
 const initialState = {
     userLogged: null,
  }
@@ -6,10 +8,10 @@ const initialState = {
     switch (action.type){
        case 'LOG_USER':
           if(action.payload){
-             console.log('Entre en el auth reducer')
-             console.log(action.payload)
-             localStorage.setItem('userLogged', JSON.stringify({name: action.payload.name, image: action.payload.image, userId: action.payload.userId}))
-             localStorage.setItem('token', action.payload.token)
+            //  console.log('Entre en el auth reducer')
+            //  console.log(action.payload)
+             AsyncStorage.setItem('userLogged', JSON.stringify({name: action.payload.name, image: action.payload.image, userId: action.payload.userId}))
+             AsyncStorage.setItem('token', action.payload.token)
           }
           return {
              ...state, 
@@ -19,7 +21,7 @@ const initialState = {
  
        case 'LOGOUT_USER':
           // localStorage.removeItem('userLogged')
-          localStorage.clear()
+          AsyncStorage.clear()
           return {
              ...state, 
              userLogged: null

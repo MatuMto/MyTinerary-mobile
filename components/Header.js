@@ -2,11 +2,14 @@ import React, { useEffect } from 'react'
 import {Text, View, StyleSheet, StatusBar, Image, ScrollView, ImageBackground, Button, TouchableHighlight, TouchableWithoutFeedback} from 'react-native'
 import axios from 'axios'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome5 } from '@expo/vector-icons'; 
+
 // import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import {
   useFonts,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
+import { connect } from 'react-redux';
 
 
 const header = (props)=>{
@@ -15,17 +18,19 @@ const header = (props)=>{
     Inter_900Black,
   });
 
-  // if (!fontsLoaded) {
-  //   return <AppLoading />;
-  // }
+  // console.log(props)
+  // const userImage = props.userLogged 
+  //   ? props.userLogged.image 
+  //   : <FontAwesome5 name="user-alt" size={24} color="white" />
 
   if(!fontsLoaded){
     return null
   }else {
   return (
     <>
-        <View style={ props.properties.screen === 'home' ? styles.homeHeader : styles.citiesHeader } >
-            <View>
+        {/* <View style={ props.properties.screen === 'Home' ? styles.homeHeader : styles.citiesHeader } > */}
+        <View style={ props.properties.screen === 'Home' ? styles.homeHeader : styles.citiesHeader } >
+            <View style={styles.barsIconContainer} >
                 <Text onPress={()=>props.properties.fatherProps.navigation.openDrawer()}>
                   <Icon name="bars" style={styles.menuIcon} />
                 </Text>
@@ -33,16 +38,18 @@ const header = (props)=>{
 
             <View style={styles.logoContainer}>
                 <Image style={styles.logoImg} source={require('../assets/logo-finish.png')} />
-                
                 <Text style={styles.titulo}>MyTinerary</Text>
-                
             </View>
             
             <TouchableWithoutFeedback 
               style={styles.userUnlogedContainer} 
               onPress={()=>console.log(props.properties.fatherProps.navigation.openDrawer())}
             >
-                <Image style={styles.userUnloged} source={require('../assets/user-icon.png')} />
+              {props.userLogged ? props.userLogged.image
+               ? <Image style={styles.userLoggedImage} source={{uri: props.userLogged.image}} />
+               : <Image style={styles.userUnloged} source={require('../assets/user-icon.png')} />
+               : <Image style={styles.userUnloged} source={require('../assets/user-icon.png')} />
+               }
             </TouchableWithoutFeedback>
         </View>
           
@@ -57,6 +64,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 100,
     backgroundColor: 'rgba(31, 160, 31, 0.090)'
+    // backgroundColor: 'red'
   },
   citiesHeader: {
     flexDirection: 'row',
@@ -64,6 +72,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 100,
     backgroundColor: 'rgba(0, 132, 255, 0.808)'
+  },
+  barsIconContainer: {
+    // backgroundColor: 'green',
+    width: '15%'
   },
   logoContainer: {
     marginLeft: 30,
@@ -87,9 +99,14 @@ const styles = StyleSheet.create({
     // borderRadius: 80
   },
   userUnloged: {
-    width: 40,
-    height: 40,
-    borderRadius: 10
+    width: '15%',
+    height: 60,
+    borderRadius: 20
+  },
+  userLoggedImage: {
+    width: '15%',
+    height: 60,
+    borderRadius: 200
   },
   probando: {
     // backgroundColor: 'green'
@@ -102,4 +119,10 @@ const styles = StyleSheet.create({
 
 })
 
-export default header
+const mapStateToProps = (state)=> {
+  return {
+    userLogged: state.auth.userLogged
+  }
+}
+
+export default connect(mapStateToProps)(header)

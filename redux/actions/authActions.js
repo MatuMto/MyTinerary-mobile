@@ -1,5 +1,6 @@
 import axios from 'axios'
-import Swal from 'sweetalert2'
+import { Alert } from 'react-native'
+// import Swal from 'sweetalert2'
 const authActions = {
 
    registerUser: (userToSave)=>{
@@ -7,17 +8,21 @@ const authActions = {
          const response = await axios.post('https://mytinerarylorenzo.herokuapp.com/api/user/signUp', userToSave)
          console.log(response)
          if(!response.data.success){
-            console.log(response)
-            response.data.error && Swal.fire({
-               icon: 'error',
-               title: 'Oops...',
-               text: response.data.error,
-             })
-            return response.data.errors //asi retorno directamente al componente que está llamando a esta action 
-            // return false // esto haria que se corte acá y la accion no continue hacia el reducer
+            console.log(response.data.error)
+            // Alert.alert('Oops!', response.data.error, [
+            //    {text: 'UNDERSTOOD'}
+            // ])
+            dispatch({type: 'LOG_USER', payload: null})
+
+            // return response.data.errors //asi retorno directamente al componente que está llamando a esta action 
+         } else {
+            console.log(response.data.response)
+            Alert.alert('Hi', 'Welcome dear ' + response.data.response.name + '!', [
+               {text: 'UNDERSTOOD'}
+            ])
+            dispatch({type: 'LOG_USER', payload: response.data.response})
          }
-         dispatch({type: 'LOG_USER', payload: response.data.success ? response.data.response : null})
-         // le pongo LOG_USER porque el trabajo del front es el mismo tanto en register como en log. Mandar Info y luego recibir La Info o el error.
+         return(response.data.success)
       }
    } ,
    
@@ -26,13 +31,21 @@ const authActions = {
          const response = await axios.post('https://mytinerarylorenzo.herokuapp.com/api/user/signIn', incomingUser)
          console.log(response.data)
          if(!response.data.success){
-            Swal.fire({
-               icon: 'error',
-               title: 'Oops...',
-               text: response.data.error,
-             })
+            Alert.alert('Oops!', response.data.error, [
+               {text: 'UNDERSTOOD'}
+            ])
+            dispatch({type: 'LOG_USER', payload: null})
+
+         }else {
+            Alert.alert('Welcome!', 'Happy to have you back ' + response.data.response.name + '!', [
+               {text: 'UNDERSTOOD'}
+            ])
+            dispatch({type: 'LOG_USER', payload: response.data.response})
          }
-         dispatch({type: 'LOG_USER', payload: response.data.success ? response.data.response : null})
+         console.log(response.data.response)
+         // dispatch({type: 'LOG_USER', payload: response.data.success ? response.data.response : null})
+         return(response.data.success)
+
          // le pongo LOG_USER porque el trabajo del front es el mismo tanto en register como en log. Mandar Info y luego recibir La Info o el error.
       }
    },

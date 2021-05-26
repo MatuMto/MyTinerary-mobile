@@ -16,9 +16,6 @@ const cities = (props)=>{
     useEffect(()=>{
         const fetchear = async()=> {
             await props.uploadCities()
-            // const respuesta = await axios.get('https://mytinerarylorenzo.herokuapp.com/api/cities')
-            
-            // setAllCities(respuesta.data.respuesta)
         }
         fetchear()  
     }, [])
@@ -32,7 +29,7 @@ const cities = (props)=>{
         <>
             <ScrollView style={styles.citiesContainer}>
                 {/* <Image source={require('../assets/fondo.jpg')} style={styles.backgroundImage} /> */}
-                <Header properties={{screen: 'home', fatherProps: props}} />
+                <Header properties={{screen: 'Home', fatherProps: props}} />
 
 
                 <View style={styles.filterSectionContainer} >
@@ -47,7 +44,7 @@ const cities = (props)=>{
                             <View key={city._id} style={styles.cityContainer} >
                                 <TouchableHighlight 
                                     style={styles.touchableHighlight}
-                                    onPress={()=>props.navigation.navigate('itineraries',{id: city._id})}
+                                    onPress={()=>props.navigation.navigate('Itineraries',{id: city._id})}
                                 >
                                     <Image source={{uri: city.img }} style={styles.cityImg} />
                                 </TouchableHighlight>
@@ -79,7 +76,7 @@ const styles = StyleSheet.create({
     filterInput: {
         marginTop: 10,
         borderWidth: 1,
-        borderBottomColor: 'black',
+        borderBottomColor: 'grey',
         width: '40%',
         borderRadius: 4,
         paddingLeft: 15
