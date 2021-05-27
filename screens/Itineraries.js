@@ -115,12 +115,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // height: '100%', 
         width: '100%'
-        // flex: 1
+        // flex: 
     },
     itineraryContainer: {
-        // backgroundColor: 'pink',
         width: '70%',
         marginVertical: 20,
+        // backgroundColor: '#DCDCDC',
+        // borderRadius: 10
+        // borderWidth: 1,
+        // borderColor: 'grey',
+        // borderRadius: 4
     },
     itineraryTitleContainer: {
         alignItems: 'center'
@@ -134,6 +138,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // backgroundColor: 'lightblue',
         justifyContent: 'space-around',
+        // backgroundColor: '#DCDCDC',
+
         // alignItems: 'center'
         // backgroundColor: 'green'
     },
